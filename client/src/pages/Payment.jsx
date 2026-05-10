@@ -37,7 +37,7 @@ function Payment() {
       const { data: order } =
         await axios.post(
 
-          "http://localhost:5000/api/payments/create-order",
+          "https://cinebook-api-iifm.onrender.com/api/payments/create-order",
 
           {
             amount: total,
@@ -78,7 +78,7 @@ function Payment() {
 
               await axios.post(
 
-                "http://localhost:5000/api/bookings",
+                "https://cinebook-api-iifm.onrender.com/api/bookings",
 
                 {
                   movieId,

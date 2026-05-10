@@ -27,7 +27,7 @@ function MyBookings() {
       const { data } =
         await axios.get(
 
-          `http://localhost:5000/api/bookings/user/${userInfo._id}`
+          `https://cinebook-api-iifm.onrender.com/api/bookings/user/${userInfo._id}`
 
         )
 

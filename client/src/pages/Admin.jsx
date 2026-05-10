@@ -31,7 +31,7 @@ function Admin() {
 
       const { data } =
         await axios.get(
-          "http://localhost:5000/api/bookings/admin/all"
+          "https://cinebook-api-iifm.onrender.com/api/bookings/admin/all"
         )
 
       setBookings(data)

@@ -121,7 +121,7 @@ function SeatSelection() {
 
       const { data } =
         await axios.get(
-          `http://localhost:5000/api/bookings/${id}`
+          `https://cinebook-api-iifm.onrender.com/api/bookings/${id}`
         )
 
       setBookedSeats(data)
