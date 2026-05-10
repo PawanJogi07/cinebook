@@ -24,9 +24,9 @@ const httpServer = createServer(app)
 const io = new Server(httpServer, {
 
   cors: {
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST']
-  }
+  origin: "*",
+  methods: ["GET", "POST"]
+}
 
 })
 
@@ -44,9 +44,9 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Middleware
 
-app.use(cors())
-
-app.use(express.json())
+app.use(cors({
+  origin: "*"
+}))
 
 // Routes
 
