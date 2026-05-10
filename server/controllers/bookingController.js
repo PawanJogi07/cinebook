@@ -47,49 +47,60 @@ export const createBooking = async (req, res) => {
 
     if (email) {
 
-      const transporter =
-        nodemailer.createTransport({
+      try {
 
-          service: "gmail",
+        const transporter =
+          nodemailer.createTransport({
 
-          auth: {
+            service: "gmail",
 
-            user:
-              "pjpawan007@gmail.com",
+            auth: {
 
-            pass:
-              "tqxg iwkz xmds yrle",
+              user:
+                "pjpawan007@gmail.com",
 
-          },
+              pass:
+                "tqxg iwkz xmds yrle",
+
+            },
+
+          })
+
+        await transporter.sendMail({
+
+          from:
+            "pjpawan007@gmail.com",
+
+          to:
+            email,
+
+          subject:
+            "CineBook Ticket Confirmation 🎬",
+
+          html: `
+
+            <h1>Booking Confirmed 😄🔥</h1>
+
+            <p>Movie ID: ${movieId}</p>
+
+            <p>Seats: ${seats.join(", ")}</p>
+
+            <p>Total Paid: ₹${total}</p>
+
+          `,
 
         })
 
-      await transporter.sendMail({
+        console.log("Email Sent Successfully")
 
-        from:
-          "pjpawan007@gmail.com",
+      } catch (mailError) {
 
-        to:
-          email,
+        console.log(
+          "Email Error:",
+          mailError.message
+        )
 
-        subject:
-          "CineBook Ticket Confirmation 🎬",
-
-        html: `
-
-          <h1>Booking Confirmed 😄🔥</h1>
-
-          <p>Movie ID: ${movieId}</p>
-
-          <p>Seats: ${seats.join(", ")}</p>
-
-          <p>Total Paid: ₹${total}</p>
-
-        `,
-
-      })
-
-      console.log("Email Sent Successfully")
+      }
 
     }
 
