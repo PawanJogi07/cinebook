@@ -23,6 +23,13 @@ function Payment() {
     localStorage.getItem("userInfo")
   )
 
+  if (!userInfo) {
+
+    alert("Please Login First")
+
+    navigate("/login")
+  }
+
   const handlePayment = async () => {
 
     try {
