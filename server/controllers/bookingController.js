@@ -6,6 +6,8 @@ export const createBooking = async (req, res) => {
 
   try {
 
+    console.log("Booking Request Body:", req.body)
+
     const {
       movieId,
       seats,
@@ -13,6 +15,21 @@ export const createBooking = async (req, res) => {
       userId,
       email,
     } = req.body
+
+    // validation
+
+    if (
+      !movieId ||
+      !seats ||
+      !total ||
+      !userId
+    ) {
+
+      return res.status(400).json({
+        message: "Missing booking fields",
+      })
+
+    }
 
     const booking =
       await Booking.create({
@@ -24,51 +41,63 @@ export const createBooking = async (req, res) => {
 
       })
 
-    const transporter =
-      nodemailer.createTransport({
+    console.log("Booking Saved:", booking)
 
-        service: "gmail",
+    // email only if email exists
 
-        auth: {
+    if (email) {
 
-          user:
-            "pjpawan007@gmail.com",
+      const transporter =
+        nodemailer.createTransport({
 
-          pass:
-            "tqxg iwkz xmds yrle",
+          service: "gmail",
 
-        },
+          auth: {
+
+            user:
+              "pjpawan007@gmail.com",
+
+            pass:
+              "tqxg iwkz xmds yrle",
+
+          },
+
+        })
+
+      await transporter.sendMail({
+
+        from:
+          "pjpawan007@gmail.com",
+
+        to:
+          email,
+
+        subject:
+          "CineBook Ticket Confirmation 🎬",
+
+        html: `
+
+          <h1>Booking Confirmed 😄🔥</h1>
+
+          <p>Movie ID: ${movieId}</p>
+
+          <p>Seats: ${seats.join(", ")}</p>
+
+          <p>Total Paid: ₹${total}</p>
+
+        `,
 
       })
 
-    await transporter.sendMail({
+      console.log("Email Sent Successfully")
 
-      from:
-        "yourgmail@gmail.com",
-
-      to:
-        email,
-
-      subject:
-        "CineBook Ticket Confirmation 🎬",
-
-      html: `
-
-        <h1>Booking Confirmed 😄🔥</h1>
-
-        <p>Movie ID: ${movieId}</p>
-
-        <p>Seats: ${seats.join(", ")}</p>
-
-        <p>Total Paid: ₹${total}</p>
-
-      `,
-
-    })
+    }
 
     res.status(201).json(booking)
 
   } catch (error) {
+
+    console.log("Booking Error:", error)
 
     res.status(500).json({
       message: error.message,

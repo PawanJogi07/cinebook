@@ -9,17 +9,28 @@ import {
 
 const router = express.Router()
 
-router.post("/", createBooking)
+// create booking
+
+router.post(
+  "/",
+  createBooking
+)
+
+// admin all bookings
 
 router.get(
   "/admin/all",
   getAllBookings
 )
 
+// user bookings
+
 router.get(
   "/user/:userId",
   getUserBookings
 )
+
+// booked seats by movie
 
 router.get(
   "/:movieId",
