@@ -27,6 +27,15 @@ function Payment() {
 
     try {
 
+      if (!userInfo) {
+
+        alert("Please Login First")
+
+        navigate("/login")
+
+        return
+      }
+
       console.log({
         movieId,
         seats,
@@ -64,10 +73,17 @@ function Payment() {
         description:
           "Movie Ticket Booking",
 
+        image:
+          "https://cdn-icons-png.flaticon.com/512/744/744922.png",
+
         order_id:
           order.id,
 
         modal: {
+
+          escape: false,
+
+          backdropclose: false,
 
           ondismiss: function () {
 
@@ -84,28 +100,37 @@ function Payment() {
             response
           ) {
 
-            console.log(response)
+            console.log(
+              "PAYMENT RESPONSE:",
+              response
+            )
 
             try {
 
-              await axios.post(
+              const booking =
+                await axios.post(
 
-                "https://cinebook-api-iifm.onrender.com/api/bookings",
+                  "https://cinebook-api-iifm.onrender.com/api/bookings",
 
-                {
-                  movieId,
+                  {
+                    movieId,
 
-                  seats,
+                    seats,
 
-                  total,
+                    total,
 
-                  userId:
-                    userInfo._id,
+                    userId:
+                      userInfo._id,
 
-                  email:
-                    userInfo.email,
-                }
+                    email:
+                      userInfo.email,
+                  }
 
+                )
+
+              console.log(
+                "BOOKING SUCCESS:",
+                booking.data
               )
 
               alert(
@@ -125,7 +150,10 @@ function Payment() {
 
             } catch (error) {
 
-              console.log(error)
+              console.log(
+                "BOOKING ERROR:",
+                error
+              )
 
               alert(
                 "Booking Save Failed ❌"
@@ -134,6 +162,27 @@ function Payment() {
             }
 
           },
+
+        prefill: {
+
+          name:
+            userInfo?.name ||
+
+            "CineBook User",
+
+          email:
+            userInfo?.email ||
+
+            "test@test.com",
+
+        },
+
+        notes: {
+
+          movie:
+            "Movie Ticket Booking",
+
+        },
 
         theme: {
 
@@ -163,7 +212,10 @@ function Payment() {
 
     } catch (error) {
 
-      console.log(error)
+      console.log(
+        "PAYMENT ERROR:",
+        error
+      )
 
       console.log(
         error.response?.data
