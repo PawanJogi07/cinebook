@@ -107,7 +107,7 @@ function Payment() {
 
             try {
 
-              const booking =
+              const bookingResponse =
                 await axios.post(
 
                   "https://cinebook-api-iifm.onrender.com/api/bookings",
@@ -124,13 +124,23 @@ function Payment() {
 
                     email:
                       userInfo.email,
+                  },
+
+                  {
+                    headers: {
+
+                      "Content-Type":
+                        "application/json",
+
+                    },
+
                   }
 
                 )
 
               console.log(
-                "BOOKING SUCCESS:",
-                booking.data
+                "BOOKING RESPONSE:",
+                bookingResponse.data
               )
 
               alert(
@@ -152,12 +162,24 @@ function Payment() {
 
               console.log(
                 "BOOKING ERROR:",
-                error
+                error.response?.data ||
+                error.message
               )
 
               alert(
-                "Booking Save Failed ❌"
+                "Booking Saved But Redirect Failed"
               )
+
+              navigate("/success", {
+
+                state: {
+                  seats,
+                  total,
+                  movieName:
+                    "Movie Ticket",
+                },
+
+              })
 
             }
 
