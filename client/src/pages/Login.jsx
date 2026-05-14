@@ -1,43 +1,61 @@
 import { useState } from "react"
 
-import { loginUser } from "../services/authService"
+import {
+  loginUser,
+} from "../services/authService"
 
 function Login() {
 
-  const [email, setEmail] = useState("")
+  const [email, setEmail] =
+    useState("")
 
-  const [password, setPassword] = useState("")
+  const [password, setPassword] =
+    useState("")
 
-  const handleLogin = async (e) => {
+  const handleLogin =
+    async (e) => {
 
-    e.preventDefault()
+      e.preventDefault()
 
-    try {
+      try {
 
-      const data = await loginUser({
+        const data =
+          await loginUser({
 
-        email,
-        password,
+            email,
+            password,
+          })
 
-      })
+        localStorage.setItem(
 
-      localStorage.setItem(
+          "userInfo",
 
-        "userInfo",
-        JSON.stringify(data)
+          JSON.stringify(data)
 
-      )
+        )
 
-      alert("Login Successful")
+        alert(
+          "Login Successful 😄🔥"
+        )
 
-      console.log(data)
+        window.location.href = "/"
 
-    } catch (error) {
+      } catch (error) {
 
-      alert("Invalid Credentials")
+        console.log(error)
+
+        alert(
+
+          error.response?.data
+            ?.message ||
+
+          "Login Failed ❌"
+
+        )
+
+      }
 
     }
-  }
 
   return (
 
@@ -56,7 +74,9 @@ function Login() {
           type="email"
           placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) =>
+            setEmail(e.target.value)
+          }
           className="w-full mb-4 p-3 rounded-lg bg-zinc-800 text-white outline-none"
         />
 
@@ -64,7 +84,9 @@ function Login() {
           type="password"
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) =>
+            setPassword(e.target.value)
+          }
           className="w-full mb-6 p-3 rounded-lg bg-zinc-800 text-white outline-none"
         />
 

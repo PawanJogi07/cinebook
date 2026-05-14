@@ -1,27 +1,48 @@
 import axios from "axios"
 
-const API_URL = "https://cinebook-api-iifm.onrender.com/api/auth"
- 
-export const registerUser = async (userData) => {
+const API =
+  "https://cinebook-api-iifm.onrender.com/api/auth"
+  
+export const registerUser =
+  async (userData) => {
 
-  const response = await axios.post(
+    const { data } =
+      await axios.post(
 
-    `${API_URL}/register`,
-    userData
+        `${API}/register`,
 
-  )
+        userData,
 
-  return response.data
+        {
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+        }
+
+      )
+
+    return data
 }
 
-export const loginUser = async (userData) => {
+export const loginUser =
+  async (userData) => {
 
-  const response = await axios.post(
+    const { data } =
+      await axios.post(
 
-    `${API_URL}/login`,
-    userData
+        `${API}/login`,
 
-  )
+        userData,
 
-  return response.data
+        {
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+        }
+
+      )
+
+    return data
 }

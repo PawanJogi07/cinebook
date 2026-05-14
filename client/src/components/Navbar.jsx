@@ -26,27 +26,49 @@ function Navbar({
 
     localStorage.removeItem("userInfo")
 
-    window.location.reload()
-
+    window.location.href = "/"
   }
 
   const handleSearch = async (e) => {
 
     if (e.key === "Enter") {
 
-      const movies = await searchMovies(search)
+      try {
 
-      if (movies.length > 0) {
+        const movies =
+          await searchMovies(search)
 
-        navigate(`/movie/${movies[0].id}`)
+        if (movies.length > 0) {
+
+          navigate(
+            `/movie/${movies[0].id}`
+          )
+
+        } else {
+
+          alert(
+            "Movie Not Found ❌"
+          )
+
+        }
+
+      } catch (error) {
+
+        console.log(error)
+
+        alert(
+          "Search Failed ❌"
+        )
 
       }
+
     }
+
   }
 
   return (
 
-    <nav className="bg-zinc-900 px-4 md:px-10 py-4 flex flex-col md:flex-row gap-4 md:gap-0 items-center justify-between">
+    <nav className="bg-zinc-900 px-4 md:px-10 py-4 flex flex-col md:flex-row gap-4 md:gap-0 items-center justify-between sticky top-0 z-50">
 
       <Link
         to="/"
@@ -55,7 +77,7 @@ function Navbar({
         CineBook
       </Link>
 
-      <div className="flex items-center gap-4 md:gap-6 w-full md:w-auto justify-center">
+      <div className="flex items-center gap-4 md:gap-6 w-full md:w-auto justify-center flex-wrap">
 
         <div className="bg-zinc-800 px-4 py-2 rounded-lg flex items-center gap-2 w-full md:w-auto">
 
@@ -65,7 +87,9 @@ function Navbar({
             type="text"
             placeholder="Search Movies"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) =>
+              setSearch(e.target.value)
+            }
             onKeyDown={handleSearch}
             className="bg-transparent outline-none text-white w-full md:w-[250px]"
           />
@@ -90,7 +114,7 @@ function Navbar({
         {
           userInfo ? (
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 flex-wrap justify-center">
 
               <div className="flex items-center gap-2">
 

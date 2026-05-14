@@ -23,13 +23,6 @@ function Payment() {
     localStorage.getItem("userInfo")
   )
 
-  if (!userInfo) {
-
-    alert("Please Login First")
-
-    navigate("/login")
-  }
-
   const handlePayment = async () => {
 
     try {
@@ -44,7 +37,7 @@ function Payment() {
       const { data: order } =
         await axios.post(
 
-          "https://cinebook-api-iifm.onrender.com/api/payments/create-order",
+          "http://localhost:5000/api/payments/create-order",
 
           {
             amount: total,
@@ -83,34 +76,28 @@ function Payment() {
 
             try {
 
-              const bookingResponse =
-                await axios.post(
+              await axios.post(
 
-                  "https://cinebook-api-iifm.onrender.com/api/bookings",
+                "http://localhost:5000/api/bookings",
 
-                  {
-                    movieId,
+                {
+                  movieId,
 
-                    seats,
+                  seats,
 
-                    total,
+                  total,
 
-                    userId:
-                      userInfo._id,
+                  userId:
+                    userInfo._id,
 
-                    email:
-                      userInfo.email,
-                  }
+                  email:
+                    userInfo.email,
+                }
 
-                )
-
-              console.log(
-                "Booking Success:",
-                bookingResponse.data
               )
 
               alert(
-                "Booking Confirmed 😄🔥"
+                "Payment Successful 😄🔥"
               )
 
               navigate("/success", {
@@ -126,28 +113,11 @@ function Payment() {
 
             } catch (error) {
 
-              console.log(
-                "Booking Error:",
-                error
-              )
-
-              // booking already saved backend me
-              // email fail ho sakta hai
+              console.log(error)
 
               alert(
-                "Booking Confirmed 😄🔥"
+                "Booking Save Failed ❌"
               )
-
-              navigate("/success", {
-
-                state: {
-                  seats,
-                  total,
-                  movieName:
-                    "Movie Ticket",
-                },
-
-              })
 
             }
 
