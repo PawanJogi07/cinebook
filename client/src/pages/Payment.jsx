@@ -1,301 +1,163 @@
-import {
-  useLocation,
-  useNavigate,
-} from "react-router-dom"
+const options = {
 
-import axios from "axios"
+  key:
+    "rzp_test_SnO0abqtEKfgaL",
 
-import qr from "../assets/qr.png"
+  amount:
+    order.amount,
 
-function Payment() {
+  currency:
+    order.currency,
 
-  const location = useLocation()
+  redirect: true,
 
-  const navigate = useNavigate()
+  name:
+    "CineBook",
 
-  const {
-    movieId,
-    seats,
-    total,
-  } = location.state
+  description:
+    "Movie Ticket Booking",
 
-  const userInfo = JSON.parse(
-    localStorage.getItem("userInfo")
-  )
+  image:
+    "https://cdn-icons-png.flaticon.com/512/744/744922.png",
 
-  const handlePayment = async () => {
+  order_id:
+    order.id,
 
-    try {
+  modal: {
 
-      if (!userInfo) {
+    escape: false,
 
-        alert("Please Login First")
+    backdropclose: false,
 
-        navigate("/login")
+    ondismiss: function () {
 
-        return
-      }
+      console.log(
+        "Payment Popup Closed"
+      )
 
-      console.log({
-        movieId,
-        seats,
-        total,
-        userId: userInfo._id,
-      })
+    },
 
-      const { data: order } =
-        await axios.post(
+  },
 
-          "https://cinebook-api-iifm.onrender.com/api/payments/create-order",
+  handler:
+    async function (
+      response
+    ) {
 
-          {
-            amount: total,
-          }
+      alert(
+        "Payment Verified ✅"
+      )
 
-        )
+      console.log(
+        "PAYMENT RESPONSE:",
+        response
+      )
 
-      console.log(order)
+      try {
 
-      const options = {
+        const bookingResponse =
+          await axios.post(
 
-        key:
-          "rzp_test_SnO0abqtEKfgaL",
+            "https://cinebook-api-iifm.onrender.com/api/bookings",
 
-        amount:
-          order.amount,
+            {
+              movieId,
 
-        currency:
-          order.currency,
+              seats,
 
-        name:
-          "CineBook",
+              total,
 
-        description:
-          "Movie Ticket Booking",
+              userId:
+                userInfo._id,
 
-        image:
-          "https://cdn-icons-png.flaticon.com/512/744/744922.png",
+              email:
+                userInfo.email,
+            },
 
-        order_id:
-          order.id,
+            {
+              headers: {
 
-        modal: {
+                "Content-Type":
+                  "application/json",
 
-          escape: false,
-
-          backdropclose: false,
-
-          ondismiss: function () {
-
-            console.log(
-              "Payment Popup Closed"
-            )
-
-          },
-
-        },
-
-        handler:
-          async function (
-            response
-          ) {
-
-            console.log(
-              "PAYMENT RESPONSE:",
-              response
-            )
-
-            try {
-
-              const bookingResponse =
-                await axios.post(
-
-                  "https://cinebook-api-iifm.onrender.com/api/bookings",
-
-                  {
-                    movieId,
-
-                    seats,
-
-                    total,
-
-                    userId:
-                      userInfo._id,
-
-                    email:
-                      userInfo.email,
-                  },
-
-                  {
-                    headers: {
-
-                      "Content-Type":
-                        "application/json",
-
-                    },
-
-                  }
-
-                )
-
-              console.log(
-                "BOOKING RESPONSE:",
-                bookingResponse.data
-              )
-
-              alert(
-                "Payment Successful 😄🔥"
-              )
-
-              navigate("/success", {
-
-                state: {
-                  seats,
-                  total,
-                  movieName:
-                    "Movie Ticket",
-                },
-
-              })
-
-            } catch (error) {
-
-              console.log(
-                "BOOKING ERROR:",
-                error.response?.data ||
-                error.message
-              )
-
-              alert(
-                "Booking Saved But Redirect Failed"
-              )
-
-              navigate("/success", {
-
-                state: {
-                  seats,
-                  total,
-                  movieName:
-                    "Movie Ticket",
-                },
-
-              })
+              },
 
             }
 
-          },
+          )
 
-        prefill: {
-
-          name:
-            userInfo?.name ||
-
-            "CineBook User",
-
-          email:
-            userInfo?.email ||
-
-            "test@test.com",
-
-        },
-
-        notes: {
-
-          movie:
-            "Movie Ticket Booking",
-
-        },
-
-        theme: {
-
-          color: "#ef4444",
-
-        },
-
-      }
-
-      console.log(options)
-
-      if (!window.Razorpay) {
+        console.log(
+          "BOOKING RESPONSE:",
+          bookingResponse.data
+        )
 
         alert(
-          "Razorpay SDK Failed To Load"
+          "Payment Successful 😄🔥"
         )
 
-        return
+        navigate("/success", {
+
+          state: {
+            seats,
+            total,
+            movieName:
+              "Movie Ticket",
+          },
+
+        })
+
+      } catch (error) {
+
+        console.log(
+          "BOOKING ERROR:",
+          error.response?.data ||
+          error.message
+        )
+
+        alert(
+          "Booking Saved But Redirect Failed"
+        )
+
+        navigate("/success", {
+
+          state: {
+            seats,
+            total,
+            movieName:
+              "Movie Ticket",
+          },
+
+        })
+
       }
 
-      const razor =
-        new window.Razorpay(
-          options
-        )
+    },
 
-      razor.open()
+  prefill: {
 
-    } catch (error) {
+    name:
+      userInfo?.name ||
 
-      console.log(
-        "PAYMENT ERROR:",
-        error
-      )
+      "CineBook User",
 
-      console.log(
-        error.response?.data
-      )
+    email:
+      userInfo?.email ||
 
-      alert(
+      "test@test.com",
 
-        error.response?.data?.message ||
+  },
 
-        error.message ||
+  notes: {
 
-        "Payment Failed ❌"
+    movie:
+      "Movie Ticket Booking",
 
-      )
-    }
-  }
+  },
 
-  return (
+  theme: {
 
-    <div className="bg-black min-h-screen text-white flex items-center justify-center">
+    color: "#ef4444",
 
-      <div className="bg-zinc-900 p-10 rounded-2xl w-[500px] text-center">
+  },
 
-        <h1 className="text-5xl font-bold mb-8">
-          Payment
-        </h1>
-
-        <h2 className="text-2xl mb-4">
-          Seats:
-        </h2>
-
-        <p className="text-red-500 text-xl mb-6">
-          {seats.join(", ")}
-        </p>
-
-        <h2 className="text-4xl font-bold mb-8">
-          ₹{total}
-        </h2>
-
-        <img
-          src={qr}
-          alt="QR"
-          className="w-[250px] mx-auto rounded-xl mb-8"
-        />
-
-        <button
-          onClick={handlePayment}
-          className="bg-green-500 hover:bg-green-600 px-8 py-3 rounded-lg text-xl font-semibold"
-        >
-
-          Payment Done
-
-        </button>
-
-      </div>
-
-    </div>
-  )
 }
-
-export default Payment
