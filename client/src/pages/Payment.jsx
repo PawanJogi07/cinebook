@@ -37,7 +37,7 @@ function Payment() {
       const { data: order } =
         await axios.post(
 
-          "http://localhost:5000/api/payments/create-order",
+          "https://cinebook-api-iifm.onrender.com/api/payments/create-order",
 
           {
             amount: total,
@@ -67,6 +67,18 @@ function Payment() {
         order_id:
           order.id,
 
+        modal: {
+
+          ondismiss: function () {
+
+            console.log(
+              "Payment Popup Closed"
+            )
+
+          },
+
+        },
+
         handler:
           async function (
             response
@@ -78,7 +90,7 @@ function Payment() {
 
               await axios.post(
 
-                "http://localhost:5000/api/bookings",
+                "https://cinebook-api-iifm.onrender.com/api/bookings",
 
                 {
                   movieId,
@@ -132,6 +144,15 @@ function Payment() {
       }
 
       console.log(options)
+
+      if (!window.Razorpay) {
+
+        alert(
+          "Razorpay SDK Failed To Load"
+        )
+
+        return
+      }
 
       const razor =
         new window.Razorpay(
