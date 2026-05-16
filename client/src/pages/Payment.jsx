@@ -1,27 +1,21 @@
 const options = {
 
-  key:
-    "rzp_test_SnO0abqtEKfgaL",
+  key: "rzp_test_SnO0abqtEKfgaL",
 
-  amount:
-    order.amount,
+  amount: order.amount,
 
-  currency:
-    order.currency,
+  currency: order.currency,
 
-  redirect: true,
+  redirect: false,
 
-  name:
-    "CineBook",
+  name: "CineBook",
 
-  description:
-    "Movie Ticket Booking",
+  description: "Movie Ticket Booking",
 
   image:
     "https://cdn-icons-png.flaticon.com/512/744/744922.png",
 
-  order_id:
-    order.id,
+  order_id: order.id,
 
   modal: {
 
@@ -39,110 +33,133 @@ const options = {
 
   },
 
-  handler:
-    async function (
-      response
-    ) {
+  handler: async function (response) {
 
-      alert(
-        "Payment Verified ✅"
-      )
+    console.log(
+      "PAYMENT RESPONSE:",
+      response
+    )
+
+    try {
+
+      // =========================
+      // PAYMENT VERIFY
+      // =========================
+
+      const verifyResponse =
+        await axios.post(
+
+          "https://cinebook-api-iifm.onrender.com/api/payment/verify",
+
+          {
+
+            razorpay_order_id:
+              response.razorpay_order_id,
+
+            razorpay_payment_id:
+              response.razorpay_payment_id,
+
+            razorpay_signature:
+              response.razorpay_signature,
+
+          }
+
+        )
 
       console.log(
-        "PAYMENT RESPONSE:",
-        response
+        "VERIFY RESPONSE:",
+        verifyResponse.data
       )
 
-      try {
+      // =========================
+      // BOOKING SAVE
+      // =========================
 
-        const bookingResponse =
-          await axios.post(
+      const bookingResponse =
+        await axios.post(
 
-            "https://cinebook-api-iifm.onrender.com/api/bookings",
+          "https://cinebook-api-iifm.onrender.com/api/bookings",
 
-            {
-              movieId,
+          {
 
-              seats,
+            movieId,
 
-              total,
+            seats,
 
-              userId:
-                userInfo._id,
+            total,
 
-              email:
-                userInfo.email,
+            userId:
+              userInfo._id,
+
+            email:
+              userInfo.email,
+
+            paymentId:
+              response.razorpay_payment_id,
+
+          },
+
+          {
+
+            headers: {
+
+              "Content-Type":
+                "application/json",
+
             },
 
-            {
-              headers: {
+          }
 
-                "Content-Type":
-                  "application/json",
-
-              },
-
-            }
-
-          )
-
-        console.log(
-          "BOOKING RESPONSE:",
-          bookingResponse.data
         )
 
-        alert(
-          "Payment Successful 😄🔥"
-        )
+      console.log(
+        "BOOKING RESPONSE:",
+        bookingResponse.data
+      )
 
-        navigate("/success", {
+      alert(
+        "Payment Successful 😄🔥"
+      )
 
-          state: {
-            seats,
-            total,
-            movieName:
-              "Movie Ticket",
-          },
+      navigate("/success", {
 
-        })
+        state: {
 
-      } catch (error) {
+          seats,
 
-        console.log(
-          "BOOKING ERROR:",
-          error.response?.data ||
-          error.message
-        )
+          total,
 
-        alert(
-          "Booking Saved But Redirect Failed"
-        )
+          movieName:
+            "Movie Ticket",
 
-        navigate("/success", {
+        },
 
-          state: {
-            seats,
-            total,
-            movieName:
-              "Movie Ticket",
-          },
+      })
 
-        })
+    } catch (error) {
 
-      }
+      console.log(
+        "ERROR:",
+        error.response?.data ||
+        error.message
+      )
 
-    },
+      alert(
+        "Payment Verification Failed ❌"
+      )
+
+    }
+
+  },
 
   prefill: {
 
     name:
       userInfo?.name ||
-
       "CineBook User",
 
     email:
       userInfo?.email ||
-
       "test@test.com",
 
   },
