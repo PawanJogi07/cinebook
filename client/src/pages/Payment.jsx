@@ -1,180 +1,72 @@
+const API_URL = import.meta.env.VITE_API_URL || "https://cinebook-api-iifm.onrender.com";
+
 const options = {
-
-  key: "rzp_test_SnO0abqtEKfgaL",
-
+  key: import.meta.env.VITE_RAZORPAY_KEY_ID,
   amount: order.amount,
-
   currency: order.currency,
-
-  redirect: false,
-
+  redirect: true,
   name: "CineBook",
-
   description: "Movie Ticket Booking",
-
-  image:
-    "https://cdn-icons-png.flaticon.com/512/744/744922.png",
-
+  image: "https://cdn-icons-png.flaticon.com/512/744/744922.png",
   order_id: order.id,
-
   modal: {
-
     escape: false,
-
     backdropclose: false,
-
     ondismiss: function () {
-
-      console.log(
-        "Payment Popup Closed"
-      )
-
+      console.log("Payment Popup Closed");
     },
-
   },
-
   handler: async function (response) {
-
-    console.log(
-      "PAYMENT RESPONSE:",
-      response
-    )
-
+    alert("Payment Verified ✅");
+    console.log("PAYMENT RESPONSE:", response);
     try {
-
-      // =========================
-      // PAYMENT VERIFY
-      // =========================
-
-      const verifyResponse =
-        await axios.post(
-
-          "https://cinebook-api-iifm.onrender.com/api/payment/verify",
-
-          {
-
-            razorpay_order_id:
-              response.razorpay_order_id,
-
-            razorpay_payment_id:
-              response.razorpay_payment_id,
-
-            razorpay_signature:
-              response.razorpay_signature,
-
-          }
-
-        )
-
-      console.log(
-        "VERIFY RESPONSE:",
-        verifyResponse.data
-      )
-
-      // =========================
-      // BOOKING SAVE
-      // =========================
-
-      const bookingResponse =
-        await axios.post(
-
-          "https://cinebook-api-iifm.onrender.com/api/bookings",
-
-          {
-
-            movieId,
-
-            seats,
-
-            total,
-
-            userId:
-              userInfo._id,
-
-            email:
-              userInfo.email,
-
-            paymentId:
-              response.razorpay_payment_id,
-
-          },
-
-          {
-
-            headers: {
-
-              "Content-Type":
-                "application/json",
-
-            },
-
-          }
-
-        )
-
-      console.log(
-        "BOOKING RESPONSE:",
-        bookingResponse.data
-      )
-
-      alert(
-        "Payment Successful 😄🔥"
-      )
-
-      navigate("/success", {
-
-        state: {
-
+      const bookingResponse = await axios.post(
+        `${API_URL}/api/bookings`,
+        {
+          movieId,
           seats,
-
           total,
-
-          movieName:
-            "Movie Ticket",
-
+          userId: userInfo._id,
+          email: userInfo.email,
         },
-
-      })
-
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("BOOKING RESPONSE:", bookingResponse.data);
+      alert("Payment Successful 😄🔥");
+      navigate("/success", {
+        state: {
+          seats,
+          total,
+          movieName: "Movie Ticket",
+        },
+      });
     } catch (error) {
-
       console.log(
-        "ERROR:",
-        error.response?.data ||
-        error.message
-      )
-
-      alert(
-        "Payment Verification Failed ❌"
-      )
-
+        "BOOKING ERROR:",
+        error.response?.data || error.message
+      );
+      alert("Booking Saved But Redirect Failed");
+      navigate("/success", {
+        state: {
+          seats,
+          total,
+          movieName: "Movie Ticket",
+        },
+      });
     }
-
   },
-
   prefill: {
-
-    name:
-      userInfo?.name ||
-      "CineBook User",
-
-    email:
-      userInfo?.email ||
-      "test@test.com",
-
+    name: userInfo?.name || "CineBook User",
+    email: userInfo?.email || "test@test.com",
   },
-
   notes: {
-
-    movie:
-      "Movie Ticket Booking",
-
+    movie: "Movie Ticket Booking",
   },
-
   theme: {
-
     color: "#ef4444",
-
   },
-
-}
+};
