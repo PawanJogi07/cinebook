@@ -72,7 +72,7 @@ export const createBooking = async (req, res) => {
                 "pjpawan007@gmail.com",
 
               pass:
-                "tqxg iwkz xmds yrle",
+                "wwvt eexp rkkc gwrx",
 
             },
 
