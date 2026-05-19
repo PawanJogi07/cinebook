@@ -6,7 +6,10 @@ export const createBooking = async (req, res) => {
 
   try {
 
-    console.log("Booking Request Body:", req.body)
+    console.log(
+      "BOOKING BODY:",
+      req.body
+    )
 
     const {
       movieId,
@@ -14,9 +17,7 @@ export const createBooking = async (req, res) => {
       total,
       userId,
       email,
-    } = req.body
-
-    // validation
+    } = req.body || {}
 
     if (
       !movieId ||
@@ -26,7 +27,8 @@ export const createBooking = async (req, res) => {
     ) {
 
       return res.status(400).json({
-        message: "Missing booking fields",
+        message:
+          "Missing booking fields",
       })
 
     }
@@ -41,10 +43,15 @@ export const createBooking = async (req, res) => {
 
       })
 
-    console.log("Booking Saved:", booking)
+    console.log(
+      "Booking Saved:",
+      booking
+    )
 
-    // email only if email exists
+    // TEMP EMAIL DISABLED
+    // mobile payment fix
 
+    /*
     if (email) {
 
       try {
@@ -91,27 +98,37 @@ export const createBooking = async (req, res) => {
 
         })
 
-        console.log("Email Sent Successfully")
+        console.log(
+          "Email Sent Successfully"
+        )
 
       } catch (mailError) {
 
         console.log(
-          "Email Error:",
+          "EMAIL ERROR:",
           mailError.message
         )
 
       }
 
     }
+    */
 
-    res.status(201).json(booking)
+    res.status(201).json({
+      success: true,
+      booking,
+    })
 
   } catch (error) {
 
-    console.log("Booking Error:", error)
+    console.log(
+      "BOOKING ERROR:",
+      error
+    )
 
     res.status(500).json({
-      message: error.message,
+      message:
+        error.message,
     })
 
   }
@@ -123,12 +140,14 @@ export const getBookedSeats = async (req, res) => {
 
     const bookings =
       await Booking.find({
-        movieId: req.params.movieId,
+        movieId:
+          req.params.movieId,
       })
 
     const bookedSeats =
       bookings.flatMap(
-        (booking) => booking.seats
+        (booking) =>
+          booking.seats
       )
 
     res.json(bookedSeats)
@@ -136,7 +155,8 @@ export const getBookedSeats = async (req, res) => {
   } catch (error) {
 
     res.status(500).json({
-      message: error.message,
+      message:
+        error.message,
     })
 
   }
@@ -149,8 +169,10 @@ export const getUserBookings =
 
       const bookings =
         await Booking.find({
+
           userId:
             req.params.userId,
+
         })
 
       res.json(bookings)
@@ -158,7 +180,8 @@ export const getUserBookings =
     } catch (error) {
 
       res.status(500).json({
-        message: error.message,
+        message:
+          error.message,
       })
 
     }
@@ -177,7 +200,8 @@ export const getAllBookings =
     } catch (error) {
 
       res.status(500).json({
-        message: error.message,
+        message:
+          error.message,
       })
 
     }
