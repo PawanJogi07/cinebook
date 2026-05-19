@@ -48,10 +48,8 @@ export const createBooking = async (req, res) => {
       booking
     )
 
-    // TEMP EMAIL DISABLED
-    // mobile payment fix
+    // EMAIL ENABLED
 
-    /*
     if (email) {
 
       try {
@@ -59,7 +57,14 @@ export const createBooking = async (req, res) => {
         const transporter =
           nodemailer.createTransport({
 
-            service: "gmail",
+            host:
+              "smtp.gmail.com",
+
+            port:
+              465,
+
+            secure:
+              true,
 
             auth: {
 
@@ -72,6 +77,12 @@ export const createBooking = async (req, res) => {
             },
 
           })
+
+        await transporter.verify()
+
+        console.log(
+          "SMTP READY"
+        )
 
         await transporter.sendMail({
 
@@ -112,7 +123,6 @@ export const createBooking = async (req, res) => {
       }
 
     }
-    */
 
     res.status(201).json({
       success: true,
