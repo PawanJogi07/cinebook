@@ -78,13 +78,7 @@ export const createBooking = async (req, res) => {
 
           })
 
-        await transporter.verify()
-
-        console.log(
-          "SMTP READY"
-        )
-
-        await transporter.sendMail({
+        transporter.sendMail({
 
           from:
             "pjpawan007@gmail.com",
@@ -108,10 +102,21 @@ export const createBooking = async (req, res) => {
           `,
 
         })
+        .then(() => {
 
-        console.log(
-          "Email Sent Successfully"
-        )
+          console.log(
+            "Email Sent Successfully"
+          )
+
+        })
+        .catch((mailError) => {
+
+          console.log(
+            "EMAIL ERROR:",
+            mailError.message
+          )
+
+        })
 
       } catch (mailError) {
 
