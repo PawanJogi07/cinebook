@@ -34,25 +34,25 @@
 
 ## 🏠 Home Page
 
-![Home Page](https://github.com/PawanJogi07/cinebook/edit/main/README.md#:~:text=home.png-,home2,-.png)
+![Home Page](![Home Page](./images/home.png))
 
 ---
 
 ## 🎟️ Seat Booking
 
-![Seat Booking](https://github.com/PawanJogi07/cinebook/edit/main/README.md#:~:text=pay.png-,seat,-.png)
+![Seat Booking](![Seat Booking](./images/seat.png))
 
 ---
 
 ## 💳 Razorpay Payment
 
-![Payment](https://github.com/PawanJogi07/cinebook/edit/main/README.md#:~:text=pay.-,png,-seat.pngp)
+![Payment](![Payment](./images/pay.png))
 
 ---
 
 ## 🎫 Ticket Confirmation
 
-![Ticket](https://github.com/PawanJogi07/cinebook/edit/main/README.md#:~:text=README.md-,confirm,-.png)
+![Ticket](![Ticket](./images/confirm.png))
 
 ---
 
