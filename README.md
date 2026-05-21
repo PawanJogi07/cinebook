@@ -57,7 +57,19 @@ https://cinebook-api-iifm.onrender.com
 
 ![Ticket](confirm.png)
 
----
+##  Select Theater
+Theater - (th.png)
+
+
+# watch Trailer 
+
+trailer - ( trailer.png)
+
+# Book Food
+
+Buy Food - ( foof.png)
+
+
 
 # 🛠️ Tech Stack
 
