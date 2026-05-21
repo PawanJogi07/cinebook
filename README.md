@@ -37,25 +37,25 @@ https://cinebook-api-iifm.onrender.com
 
 ## 🏠 Home Page
 
-![Home Page](./images/home.png)
+![Home Page](home2.png)
 
 ---
 
 ## 🎟️ Seat Booking
 
-![Seat Booking](./images/seat.png)
+![Seat Booking](seat.png)
 
 ---
 
 ## 💳 Razorpay Payment
 
-![Payment](./images/pay.png)
+![Payment](pay.png)
 
 ---
 
 ## 🎫 Ticket Confirmation
 
-![Ticket](./images/confirm.png)
+![Ticket](confirm.png)
 
 ---
 
