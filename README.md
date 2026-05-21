@@ -43,7 +43,7 @@ https://cinebook-api-iifm.onrender.com
 
 ## 🎟️ Seat Booking
 
-![Seat Booking](seat.png)
+![Seat Booking](lock.png)
 
 ---
 
