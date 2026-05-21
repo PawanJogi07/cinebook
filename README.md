@@ -1,6 +1,6 @@
 # 🎬 CineBook — Full Stack Movie Ticket Booking App
 
-![CineBook Banner](./images/home.png)
+![CineBook Banner](home.png)
 
 ---
 
