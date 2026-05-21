@@ -58,16 +58,17 @@ https://cinebook-api-iifm.onrender.com
 ![Ticket](confirm.png)
 
 ##  Select Theater
-Theater - (th.png)
+
+![Select Theater  Banner](th.png)
 
 
 # watch Trailer 
 
-trailer - ( trailer.png)
+![Trailer  Banner](trailer.png)
 
 # Book Food
 
-Buy Food - ( foof.png)
+![Food Banner](food.png)
 
 
 
